@@ -1,0 +1,58 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # change to validate later
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:test-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:test-client-secret}
+            scope:
+              - email
+              - profile
+              - openid
+
+          github:
+            client-id: ${GITHUB_CLIENT_ID:test-client-id}
+            client-secret: ${GITHUB_CLIENT_SECRET:test-client-secret}
+            scope:
+              - user:email
+              - read:user
+
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: ${JWT_ISSUER:securities.authplus.com}
+    access-token-ttl: ${JWT_ACCESS_TOKEN_TTL:1800}
+    refresh-token-ttl: ${JWT_REFRESH_TOKEN_TTL:3600}
+    refresh-token-cookie-name: ${JWT_REFRESH_COOKIE_NAME:refreshToken}
+    cookie-secure: ${JWT_COOKIE_SECURE:true}
+    cookie-http_only: ${JWT_COOKIE_HTTP_ONLY:true}
+    cookie-same-site: ${JWT_COOKIE_SAME_SITE:lax}
+    cookie-domain: ${JWT_COOKIE_DOMAIN:localhost}
+
+
+
+app:
+  cors:
+    frontend-url: ${FRONTEND_URL:http://localhost:5173,http://localhost:3000}
+  auth:
+    frontend:
+      login-success-redirect-uri: ${FRONTEND_SUCCESS_URL:http://localhost:3000/refresh?returnUrl=/dashboard}
+      login-failure-redirect-uri: ${FRONTEND_FAILURE_URL:http://localhost:3000/login/}
