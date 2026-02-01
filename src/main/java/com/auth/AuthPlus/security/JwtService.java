@@ -38,10 +38,9 @@ public class JwtService
             @Value("${security.jwt.refresh-token-ttl}") long refreshTokenTTL,
             @Value("${security.jwt.issuer}") String issuer )
     {
-       if(secret == null || secret.isEmpty() || secret.length()<64){
-           throw new IllegalArgumentException("Invalid Secret!!!");
-       }
-
+        if (secret == null || secret.isEmpty() || secret.length() < 64) {
+            throw new IllegalArgumentException("Invalid Secret!!!");
+        }
 
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.accessTokenTTL = accessTokenTTL;
