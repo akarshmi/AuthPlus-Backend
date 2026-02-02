@@ -36,7 +36,7 @@ spring:
 security:
   jwt:
     secret: ${JWT_SECRET}
-    issuer: ${JWT_ISSUER:authplussecurities.vercel.com}
+    issuer: ${JWT_ISSUER:https://authplussecurities.vercel.com}
     access-token-ttl: ${JWT_ACCESS_TOKEN_TTL:1800}
     refresh-token-ttl: ${JWT_REFRESH_TOKEN_TTL:3600}
     refresh-token-cookie-name: ${JWT_REFRESH_COOKIE_NAME:refreshToken}
