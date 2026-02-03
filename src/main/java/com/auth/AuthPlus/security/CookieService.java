@@ -36,6 +36,8 @@ public class CookieService {
 
     public void attachRefreshCookie(HttpServletResponse response, String refreshToken, int maxAge) {
 
+
+
         ResponseCookie.ResponseCookieBuilder responseCookieBuilder = ResponseCookie.from(refreshTokenCookieName, refreshToken)
                 .httpOnly(cookieHttpOnly)
                 .secure(cookieSecure)
@@ -62,9 +64,10 @@ public class CookieService {
                 .path("/")
                 .maxAge(0);
 
-        if (cookieDomain != null && !cookieDomain.isEmpty()) {
-            responseCookieBuilder.domain(cookieDomain);
-        }
+//        if (cookieDomain != null && !cookieDomain.isEmpty()) {
+//            responseCookieBuilder.domain(cookieDomain);
+//        }
+
         ResponseCookie responseCookie = responseCookieBuilder.build();
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
