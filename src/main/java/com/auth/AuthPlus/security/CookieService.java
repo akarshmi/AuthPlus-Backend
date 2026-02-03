@@ -15,19 +15,19 @@ public class CookieService {
     private final boolean cookieHttpOnly;
     private final boolean cookieSecure;
 //    private final String cookieMaxAge;
-    private final String cookieDomain;
+//    private final String cookieDomain;
     private final String cookieSameSite;
 
     public CookieService(@Value("${security.jwt.refresh-token-cookie-name}") String refreshTokenCookieName,
                          @Value("${security.jwt.cookie-http-only}") boolean cookieHttpOnly,
                          @Value("${security.jwt.cookie-secure}") boolean cookieSecure,
-                         @Value("${security.jwt.cookie-domain}") String cookieDomain,
+
                          @Value("${security.jwt.cookie-same-site}") String cookieSameSite
     ) {
         this.refreshTokenCookieName = refreshTokenCookieName;
         this.cookieHttpOnly = cookieHttpOnly;
         this.cookieSecure = cookieSecure;
-        this.cookieDomain = cookieDomain;
+//        this.cookieDomain = cookieDomain;
         this.cookieSameSite = cookieSameSite;
     }
 
@@ -45,9 +45,9 @@ public class CookieService {
                 .path("/")
                 .maxAge(maxAge);
 
-        if (cookieDomain != null && !cookieDomain.isEmpty()) {
-            responseCookieBuilder.domain(cookieDomain);
-        }
+//        if (cookieDomain != null && !cookieDomain.isEmpty()) {
+//            responseCookieBuilder.domain(cookieDomain);
+//        }
         ResponseCookie responseCookie = responseCookieBuilder.build();
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
 
@@ -63,8 +63,7 @@ public class CookieService {
                 .sameSite(cookieSameSite)
                 .path("/")
                 .maxAge(0);
-
-//        if (cookieDomain != null && !cookieDomain.isEmpty()) {
+//        if (!cookieDomain.isBlank()) {
 //            responseCookieBuilder.domain(cookieDomain);
 //        }
 
