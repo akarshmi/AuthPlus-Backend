@@ -2,8 +2,10 @@ package com.auth.AuthPlus.security;
 
 import com.auth.AuthPlus.entities.Provider;
 import com.auth.AuthPlus.entities.RefreshToken;
+import com.auth.AuthPlus.entities.Role;
 import com.auth.AuthPlus.entities.User;
 import com.auth.AuthPlus.repositories.RefreshTokenRepository;
+import com.auth.AuthPlus.repositories.RoleRepository;
 import com.auth.AuthPlus.repositories.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 @Slf4j
 @Component
@@ -29,6 +32,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RoleRepository roleRepository;
 
 
 
@@ -47,7 +51,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
 //        now identify the user
-
         String registrationId = "unknown";
         if (authentication instanceof OAuth2AuthenticationToken token){
             registrationId = token.getAuthorizedClientRegistrationId();
@@ -55,6 +58,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         User user;
+
+
+            Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Default role not found"));
+
         switch (registrationId){
             case "google" -> {
                 String  googleId = oAuth2User.getAttributes().getOrDefault("sub","").toString();
@@ -70,6 +77,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                         .image(picture)
                         .provider(Provider.GOOGLE)
                         .providerId(googleId)
+                        .roles(Set.of(userRole))
                         .build();
                 user = userRepository.findByEmail(email).orElseGet(() -> userRepository.save(newUser));
             }
@@ -92,6 +100,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                         .provider(Provider.GITHUB)
                         .enabled(true)
                         .providerId(githubId)
+                        .roles(Set.of(userRole))
                         .build();
                 user = userRepository.findByEmail(email).orElseGet(() -> userRepository.save(newUser));
             }
@@ -111,6 +120,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 .createdAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(jwtService.getRefreshTokenTTL()))
                 .build();
+
 
         refreshTokenRepository.save(refreshTokenObj);
         String accessToken  = jwtService.generateAccessToken(user);
