@@ -33,6 +33,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final RoleRepository roleRepository;
 
 
+
+
     @Value("${app.auth.frontend.login-success-redirect-uri}")
     private String successRedirectUri;
 

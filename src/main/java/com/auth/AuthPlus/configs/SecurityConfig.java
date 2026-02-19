@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +37,7 @@ public class SecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     private AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationSuccessHandler authenticationSuccessHandler) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, @Lazy AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
@@ -53,7 +54,6 @@ public class SecurityConfig {
                 authorizeRequests
                         .requestMatchers(AppConstants.PUBLIC_ACCESS_URLS).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
                         .requestMatchers("/api/v1/users/**").hasRole(AppConstants.ROLE_ADMIN)
                         .anyRequest().authenticated()
                 )
