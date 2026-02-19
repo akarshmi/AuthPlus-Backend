@@ -69,15 +69,12 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> me(Authentication authentication) {
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
         UUID userId = UUID.fromString(authentication.getName());
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // ✅ Add this temporarily
+        System.out.println("Found user: " + user.getUserId() + " | " + user.getEmail() + " | " + user.getName() + " | " + user.getProvider());
+
 
         return ResponseEntity.ok(new UserDto(
                 user.getUserId(),
