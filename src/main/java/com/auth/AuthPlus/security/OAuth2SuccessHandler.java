@@ -80,6 +80,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                         .roles(Set.of(userRole))
                         .build();
                 user = userRepository.findByEmail(email).orElseGet(() -> userRepository.save(newUser));
+                if (user.getRoles() == null || user.getRoles().isEmpty()) {
+                    user.setRoles(Set.of(userRole));
+                    user = userRepository.save(user);
+                }
             }
 
             case "github" -> {
@@ -103,6 +107,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                         .roles(Set.of(userRole))
                         .build();
                 user = userRepository.findByEmail(email).orElseGet(() -> userRepository.save(newUser));
+                if (user.getRoles() == null || user.getRoles().isEmpty()) {
+                    user.setRoles(Set.of(userRole));
+                    user = userRepository.save(user);
+                }
             }
 
             default -> {
