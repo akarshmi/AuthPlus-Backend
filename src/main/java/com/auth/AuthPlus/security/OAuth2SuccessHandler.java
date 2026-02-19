@@ -30,8 +30,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final RoleRepository roleRepository;
-
 
 
 
