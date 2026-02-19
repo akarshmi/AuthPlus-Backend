@@ -46,11 +46,10 @@ security:
 
 
 
-
 app:
   cors:
     frontend-url: ${FRONTEND_URL:http://localhost:5173,http://localhost:3000}
-    auth:
-      frontend:
-        login-success-redirect-uri: ${FRONTEND_SUCCESS_URL:http://localhost:3000/oauth2/callback?returnUrl=/dashboard}
-        login-failure-redirect-uri: ${FRONTEND_FAILURE_URL:http://localhost:3000/login}
+  auth:            # ← same level as cors
+    frontend:
+      login-success-redirect-uri: ${FRONTEND_SUCCESS_URL:https://authplussecurities.vercel.app/oauth2/callback?returnUrl=/dashboard}
+      login-failure-redirect-uri: ${FRONTEND_FAILURE_URL:https://authplussecurities.vercel.app/login}

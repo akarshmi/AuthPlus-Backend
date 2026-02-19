@@ -4,7 +4,6 @@ import com.auth.AuthPlus.entities.Provider;
 import com.auth.AuthPlus.entities.RefreshToken;
 import com.auth.AuthPlus.entities.User;
 import com.auth.AuthPlus.repositories.RefreshTokenRepository;
-import com.auth.AuthPlus.repositories.RoleRepository;
 import com.auth.AuthPlus.repositories.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
