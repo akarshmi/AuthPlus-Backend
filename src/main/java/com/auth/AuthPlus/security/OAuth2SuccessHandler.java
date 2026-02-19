@@ -4,6 +4,7 @@ import com.auth.AuthPlus.entities.Provider;
 import com.auth.AuthPlus.entities.RefreshToken;
 import com.auth.AuthPlus.entities.User;
 import com.auth.AuthPlus.repositories.RefreshTokenRepository;
+import com.auth.AuthPlus.repositories.RoleRepository;
 import com.auth.AuthPlus.repositories.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -30,6 +30,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RoleRepository roleRepository;
+
 
     @Value("${app.auth.frontend.login-success-redirect-uri}")
     private String successRedirectUri;
@@ -60,6 +62,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 String  email = oAuth2User.getAttributes().getOrDefault("email","").toString();
                 String  name = oAuth2User.getAttributes().getOrDefault("name","").toString();
                 String  picture = oAuth2User.getAttributes().getOrDefault("picture","").toString();
+
 
                 User newUser = User.builder()
                         .name(name)
@@ -115,7 +118,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtService.generateRefreshToken(user, refreshTokenObj.getJti());
 
         cookieService.attachRefreshCookie(response,refreshToken,(int)jwtService.getRefreshTokenTTL());
-
         response.sendRedirect(successRedirectUri);
     }
 

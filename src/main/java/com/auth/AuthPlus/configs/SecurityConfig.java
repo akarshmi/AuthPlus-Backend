@@ -53,7 +53,7 @@ public class SecurityConfig {
                 authorizeRequests
                         .requestMatchers(AppConstants.PUBLIC_ACCESS_URLS).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.GET).hasRole(AppConstants.ROLE_USER)
+
                         .requestMatchers("/api/v1/users/**").hasRole(AppConstants.ROLE_ADMIN)
                         .anyRequest().authenticated()
                 )
