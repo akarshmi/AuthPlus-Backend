@@ -34,12 +34,17 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+
+
+    @Value("${app.auth.frontend.login-failure-redirect-uri}")
+    private String failureRedirectUri;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, @Lazy AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
+
     }
 
     @Bean
@@ -60,7 +65,9 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2->
                         oauth2.successHandler(authenticationSuccessHandler)
-                                .failureHandler(null)
+                                .failureHandler((request, response, exception) -> {
+                                    response.sendRedirect(failureRedirectUri);
+                                })
                 )
                 .logout(AbstractHttpConfigurer::disable)
                 .exceptionHandling(ex ->
