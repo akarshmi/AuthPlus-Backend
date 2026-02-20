@@ -30,5 +30,18 @@ public class UserDto {
 
 
     public UserDto(UUID userId, String email, String name, String image, boolean enabled, Instant createdAt, Instant updatedAt, Provider provider, Set<Role> roles) {
+        this.userId = userId;
+        this.email = email;
+        this.name = name;
+        this.image = image;
+        this.enabled = enabled;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.provider = provider;
+        this.roles = roles != null
+                ? roles.stream()
+                .map(role -> new RoleDto(role.getRoleId(), role.getName()))
+                .collect(java.util.stream.Collectors.toSet())
+                : new HashSet<>();
     }
 }
