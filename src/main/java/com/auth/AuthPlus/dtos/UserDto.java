@@ -2,6 +2,7 @@ package com.auth.AuthPlus.dtos;
 
 import com.auth.AuthPlus.entities.Provider;
 import com.auth.AuthPlus.entities.Role;
+import com.auth.AuthPlus.entities.User;
 import lombok.*;
 
 import java.time.Instant;
@@ -43,5 +44,24 @@ public class UserDto {
                 .map(role -> new RoleDto(role.getRoleId(), role.getName()))
                 .collect(java.util.stream.Collectors.toSet())
                 : new HashSet<>();
+    }
+
+
+    public static UserDto from(User user) {
+        UserDto dto = new UserDto();
+        dto.setUserId(user.getUserId());
+        dto.setEmail(user.getEmail());
+        dto.setName(user.getName());
+        dto.setImage(user.getImage());
+        dto.setEnabled(user.isEnabled());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setUpdatedAt(user.getUpdatedAt());
+        dto.setProvider(user.getProvider());
+        dto.setRoles(user.getRoles() != null
+                ? user.getRoles().stream()
+                .map(role -> new RoleDto(role.getRoleId(), role.getName()))
+                .collect(java.util.stream.Collectors.toSet())
+                : new HashSet<>());
+        return dto;
     }
 }

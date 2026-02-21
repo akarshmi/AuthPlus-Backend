@@ -81,7 +81,7 @@ public class AuthController {
         cookieService.attachRefreshCookie(response,refreshToken, (int) jwtService.getRefreshTokenTTL());
         cookieService.addNoStoreHeaders(response);
 
-        TokenResponse tokenResponse = TokenResponse.of(accessToken, refreshToken, jwtService.getAccessTokenTTL(), mapper.map(user, UserDto.class));
+        TokenResponse tokenResponse = TokenResponse.of(accessToken, refreshToken, jwtService.getAccessTokenTTL(), UserDto.from(user));
 
         return ResponseEntity.ok(tokenResponse);
     }
@@ -138,7 +138,7 @@ public class AuthController {
 
         cookieService.attachRefreshCookie(response,newRefreshToken, (int) jwtService.getRefreshTokenTTL());
         cookieService.addNoStoreHeaders(response);
-        return ResponseEntity.ok(TokenResponse.of(newAccessToken,newRefreshToken,jwtService.getAccessTokenTTL(), mapper.map(user, UserDto.class)));
+        return ResponseEntity.ok(TokenResponse.of(newAccessToken,newRefreshToken,jwtService.getAccessTokenTTL(), UserDto.from(user)));
 
     }
 

@@ -72,21 +72,10 @@ public class UserController {
         UUID userId = UUID.fromString(authentication.getName());
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        // ✅ Add this temporarily
         System.out.println("Found user: " + user.getUserId() + " | " + user.getEmail() + " | " + user.getName() + " | " + user.getProvider());
 
 
-        return ResponseEntity.ok(new UserDto(
-                user.getUserId(),
-                user.getEmail(),
-                user.getName(),
-                user.getImage(),
-                user.isEnabled(),
-                user.getCreatedAt(),
-                user.getUpdatedAt(),
-                user.getProvider(),
-                user.getRoles()
-        ));
+        return ResponseEntity.ok(UserDto.from(user));
     }
 
 

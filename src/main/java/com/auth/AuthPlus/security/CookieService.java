@@ -21,7 +21,6 @@ public class CookieService {
     public CookieService(@Value("${security.jwt.refresh-token-cookie-name}") String refreshTokenCookieName,
                          @Value("${security.jwt.cookie-http-only}") boolean cookieHttpOnly,
                          @Value("${security.jwt.cookie-secure}") boolean cookieSecure,
-
                          @Value("${security.jwt.cookie-same-site}") String cookieSameSite
     ) {
         this.refreshTokenCookieName = refreshTokenCookieName;
@@ -35,9 +34,6 @@ public class CookieService {
 //    now we will create the method to attach cookie response
 
     public void attachRefreshCookie(HttpServletResponse response, String refreshToken, int maxAge) {
-
-
-
         ResponseCookie.ResponseCookieBuilder responseCookieBuilder = ResponseCookie.from(refreshTokenCookieName, refreshToken)
                 .httpOnly(cookieHttpOnly)
                 .secure(cookieSecure)
